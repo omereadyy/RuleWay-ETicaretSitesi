@@ -1,0 +1,145 @@
+@model IEnumerable<Deneme.Models.Product>
+
+@{
+    ViewData["Title"] = "Ürün Yönetimi";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-box"></i> Ürün Yönetimi</h2>
+    <a asp-action="Create" class="btn btn-success">
+        <i class="fas fa-plus"></i> Yeni Ürün
+    </a>
+</div>
+
+<!-- Filtreleme Formu -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5><i class="fas fa-filter"></i> Filtrele</h5>
+    </div>
+    <div class="card-body">
+        <form method="get">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="searchKeyword" class="form-label">Arama</label>
+                    <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" 
+                           value="@ViewData["SearchKeyword"]" placeholder="Başlık, açıklama veya kategori">
+                </div>
+                <div class="col-md-3">
+                    <label for="minStock" class="form-label">Min. Stok</label>
+                    <input type="number" class="form-control" id="minStock" name="minStock" 
+                           value="@ViewData["MinStock"]" min="0">
+                </div>
+                <div class="col-md-3">
+                    <label for="maxStock" class="form-label">Max. Stok</label>
+                    <input type="number" class="form-control" id="maxStock" name="maxStock" 
+                           value="@ViewData["MaxStock"]" min="0">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="fas fa-search"></i> Filtrele
+                    </button>
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Başarı Mesajı -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle"></i> @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<!-- Ürün Tablosu -->
+<div class="card">
+    <div class="card-body">
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5">
+                <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">Ürün bulunamadı</h4>
+                <p class="text-muted">Henüz hiç ürün eklenmemiş veya filtreleme kriterlerinize uygun ürün yok.</p>
+                <a asp-action="Create" class="btn btn-success">
+                    <i class="fas fa-plus"></i> İlk Ürününüzü Ekleyin
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Başlık</th>
+                            <th>Kategori</th>
+                            <th>Stok</th>
+                            <th>Durum</th>
+                            <th>Oluşturulma</th>
+                            <th width="200">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@Html.DisplayFor(modelItem => item.Title)</strong>
+                                    @if (!string.IsNullOrEmpty(item.Description))
+                                    {
+                                        <br><small class="text-muted">@(item.Description.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</small>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">@Html.DisplayFor(modelItem => item.Category.Name)</span>
+                                </td>
+                                <td>
+                                    @if (item.StockQuantity < item.Category.MinimumStockQuantity)
+                                    {
+                                        <span class="badge bg-danger">@Html.DisplayFor(modelItem => item.StockQuantity)</span>
+                                        <small class="text-muted d-block">Min: @item.Category.MinimumStockQuantity</small>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">@Html.DisplayFor(modelItem => item.StockQuantity)</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.IsPublished)
+                                    {
+                                        <span class="badge bg-success"><i class="fas fa-check"></i> Yayında</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning"><i class="fas fa-pause"></i> Taslak</span>
+                                    }
+                                </td>
+                                <td>
+                                    <small>@item.CreatedAt.ToString("dd.MM.yyyy")</small>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info" title="Detaylar">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning" title="Düzenle">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" title="Sil">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

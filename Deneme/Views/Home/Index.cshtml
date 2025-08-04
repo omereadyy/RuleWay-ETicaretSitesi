@@ -1,0 +1,70 @@
+@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
+            <h1 class="display-4">E-Ticaret Yönetim Sistemi</h1>
+            <p class="lead">Ürün ve kategori yönetimini kolayca yapabileceğiniz modern arayüz.</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-box fa-3x text-primary"></i>
+                </div>
+                <h5 class="card-title">Ürün Yönetimi</h5>
+                <p class="card-text">Ürünlerinizi ekleyin, düzenleyin, silin ve stok durumlarını takip edin.</p>
+                <a asp-controller="Products" asp-action="Index" class="btn btn-primary">
+                    <i class="fas fa-arrow-right"></i> Ürünleri Yönet
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-tags fa-3x text-success"></i>
+                </div>
+                <h5 class="card-title">Kategori Yönetimi</h5>
+                <p class="card-text">Kategorilerinizi organize edin ve minimum stok seviyelerini belirleyin.</p>
+                <a asp-controller="Categories" asp-action="Index" class="btn btn-success">
+                    <i class="fas fa-arrow-right"></i> Kategorileri Yönet
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle"></i> Sistem Özellikleri</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6><i class="fas fa-check text-success"></i> CRUD İşlemleri</h6>
+                        <p>Oluştur, Oku, Güncelle, Sil</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6><i class="fas fa-search text-info"></i> Filtreleme</h6>
+                        <p>Başlık, açıklama ve stok bazlı</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6><i class="fas fa-shield-alt text-warning"></i> Validasyon</h6>
+                        <p>Otomatik doğrulama kuralları</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

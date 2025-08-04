@@ -1,0 +1,100 @@
+@model Deneme.Models.Product
+
+@{
+    ViewData["Title"] = "Ürün Detay";
+}
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h4><i class="fas fa-info-circle"></i> Ürün Detayları</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Başlık:</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Title)</dd>
+
+                    <dt class="col-sm-3">Açıklama:</dt>
+                    <dd class="col-sm-9">
+                        @if (string.IsNullOrEmpty(Model.Description))
+                        {
+                            <em class="text-muted">Açıklama bulunmuyor</em>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Description)
+                        }
+                    </dd>
+
+                    <dt class="col-sm-3">Kategori:</dt>
+                    <dd class="col-sm-9">
+                        <span class="badge bg-info fs-6">@Html.DisplayFor(model => model.Category.Name)</span>
+                        @if (!string.IsNullOrEmpty(Model.Category.Description))
+                        {
+                            <br><small class="text-muted">@Model.Category.Description</small>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-3">Stok Durumu:</dt>
+                    <dd class="col-sm-9">
+                        @if (Model.StockQuantity < Model.Category.MinimumStockQuantity)
+                        {
+                            <span class="badge bg-danger fs-6">@Html.DisplayFor(model => model.StockQuantity) adet</span>
+                            <div class="alert alert-warning mt-2" role="alert">
+                                <i class="fas fa-exclamation-triangle"></i> 
+                                <strong>Düşük Stok!</strong> Minimum stok seviyesi: @Model.Category.MinimumStockQuantity adet
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success fs-6">@Html.DisplayFor(model => model.StockQuantity) adet</span>
+                            <br><small class="text-muted">Minimum: @Model.Category.MinimumStockQuantity adet</small>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-3">Yayın Durumu:</dt>
+                    <dd class="col-sm-9">
+                        @if (Model.IsPublished)
+                        {
+                            <span class="badge bg-success fs-6"><i class="fas fa-check"></i> Yayında</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning fs-6"><i class="fas fa-pause"></i> Taslak</span>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-3">Oluşturulma:</dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.CreatedAt)
+                        <br><small class="text-muted">@Model.CreatedAt.ToString("dddd, dd MMMM yyyy HH:mm", new System.Globalization.CultureInfo("tr-TR"))</small>
+                    </dd>
+
+                    @if (Model.UpdatedAt.HasValue)
+                    {
+                        <dt class="col-sm-3">Son Güncelleme:</dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.UpdatedAt)
+                            <br><small class="text-muted">@Model.UpdatedAt.Value.ToString("dddd, dd MMMM yyyy HH:mm", new System.Globalization.CultureInfo("tr-TR"))</small>
+                        </dd>
+                    }
+                </dl>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Geri Dön
+                    </a>
+                    <div>
+                        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning me-2">
+                            <i class="fas fa-edit"></i> Düzenle
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Sil
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
